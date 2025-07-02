@@ -5,8 +5,10 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] GameObject bulletPrefab;
-    [SerializeField] float intervalMin = 0.5f;
-    [SerializeField] float intervalMax = 3f;
+    public float intervalMin = 0.5f;
+    public float intervalMax = 3f;
+    public float speedlMin = 0.5f;
+    public float speedMax = 3f;
 
     Transform target;
 
