@@ -11,12 +11,12 @@ public class GameManager : MonoBehaviour
 
     int deleteCount = 3;
 
+    GameObject[] spawners;
+
     [SerializeField] GameObject gameoverText;
     [SerializeField] Text timeText;
     [SerializeField] Text bestTimeText;
     [SerializeField] Text deleteCountText;
-
-    Spawner spawner;
 
     void Awake()
     {
@@ -24,7 +24,11 @@ public class GameManager : MonoBehaviour
         isGameover = false;
 
         gameoverText.SetActive(false);
-        spawner = FindObjectOfType<Spawner>().GetComponent<Spawner>();
+    }
+
+    void Start()
+    {
+        Invoke("IntervalSet", 5f);
     }
 
     void Update()
@@ -37,7 +41,10 @@ public class GameManager : MonoBehaviour
         else
         {
             if (Input.GetKeyDown(KeyCode.R))
+            {
                 SceneManager.LoadScene("Dodge");
+                Time.timeScale = 1;
+            }
         }
 
         deleteCountText.text = "" + deleteCount;
@@ -53,12 +60,19 @@ public class GameManager : MonoBehaviour
 
             deleteCount--;
         }
+    }
 
-        if (time % 5 == 0 && spawner.intervalMax > spawner.intervalMin && spawner.intervalMin > 0.2f)
+    void IntervalSet()
+    {
+        spawners = GameObject.FindGameObjectsWithTag("Spawner");
+
+        foreach (GameObject spawner in spawners)
         {
-            spawner.intervalMax -= 0.1f;
-            spawner.intervalMin -= 0.05f;
+            spawner.GetComponent<Spawner>().intervalMax = Mathf.Max(0.5f, spawner.GetComponent<Spawner>().intervalMax - 0.2f);
+            spawner.GetComponent<Spawner>().intervalMin = Mathf.Max(0.1f, spawner.GetComponent<Spawner>().intervalMin - 0.1f);
         }
+
+        Invoke("IntervalSet", 5f);
     }
 
     public void EndGame()
@@ -73,6 +87,8 @@ public class GameManager : MonoBehaviour
             bestTime = time;
             PlayerPrefs.SetFloat("BestTime", bestTime);
         }
+
+        Time.timeScale = 0;
 
         bestTimeText.text = "Best Time: " + string.Format("{0:f2}", time);
     }
