@@ -23,15 +23,13 @@ public class Player : MonoBehaviour
 
         Vector3 PlayerVelocity = new Vector3(xSpeed, 0f, zSpeed);
         rigid.velocity = PlayerVelocity;
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Die();
-        }
     }
 
     public void Die()
     {
         gameObject.SetActive(false);
+
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        gameManager.EndGame();
     }
 }
