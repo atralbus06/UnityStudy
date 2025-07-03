@@ -23,16 +23,6 @@ public class Player : MonoBehaviour
 
         Vector3 PlayerVelocity = new Vector3(xSpeed, 0f, zSpeed);
         rigid.velocity = PlayerVelocity;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
-
-            foreach (GameObject bullet in bullets)
-            {
-                Destroy(bullet);
-            }
-        }
     }
 
     public void Die()
